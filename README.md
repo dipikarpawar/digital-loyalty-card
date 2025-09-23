@@ -36,8 +36,8 @@ Pandas (analytics/reporting)
 
 Project Structure
 -----------------
-├── main.py         # API endpoints
-├── database.py     # MongoDB connection
-├── auth.py         # JWT and password hashing
-├── utils.py        # QR code + S3 upload helpers
-├── .env            # Environment variables
+- main.py         # API endpoints
+- database.py     # MongoDB connection
+- auth.py         # JWT and password hashing
+- utils.py        # QR code + S3 upload helpers
+- .env            # Environment variables
