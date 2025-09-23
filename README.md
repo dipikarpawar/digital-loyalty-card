@@ -8,7 +8,7 @@ It’s built with FastAPI and MongoDB Atlas, using QR codes to link customers wi
 Features
 ========
 
-Vendor accounts
+- Vendor accounts
 ---------------
 Signup & login with email and password
 JWT authentication for secure access
@@ -16,16 +16,16 @@ Customer management
 Vendors can register their own customers
 Each customer is tied to a vendor
 
-Digital punch cards
+- Digital punch cards
 -------------------
 QR codes generated for each vendor
 Customers get a “punch” when they scan the vendor’s code
 
-Analytics
+- Analytics
 ---------
 Vendors can see how many repeat customers they had in a given week
 
-Tech Stack
+- Tech Stack
 ----------
 Python (FastAPI)
 MongoDB Atlas (database)
