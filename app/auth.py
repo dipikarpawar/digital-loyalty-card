@@ -6,6 +6,7 @@ from database import vendors_collection
 from datetime import datetime, timedelta
 from bson import ObjectId
 from dotenv import load_dotenv
+from typing import Optional
 import jwt
 import os
 
@@ -23,7 +24,7 @@ JWT_ALGORITHM = os.getenv("JWT_ALGORITHM","HS256")
 JWT_EXPIRE_MINUTES = int(os.getenv("JWT_EXPIRE_MINUTES",60))
 
 
-# Registration request model
+# Vendor registration request model
 class VendorRegisterRequest(BaseModel):
     name: str = Field(..., example="John Doe")
     email: EmailStr
@@ -31,10 +32,15 @@ class VendorRegisterRequest(BaseModel):
     business_name: str = Field(..., example="John's Cafe")
 
 
-# Login request model
+# Vendor login request model
 class VendorLoginRequest(BaseModel):
     email: EmailStr
     password: str
+
+# Vendor update request model
+class VendorUpdateRequest(BaseModel):
+    name: Optional[str] = Field(None, example="John Doe")
+    business_name: Optional[str] = Field(None, example="John's Cafe")
 
 
 def get_current_vendor(credentials: HTTPAuthorizationCredentials = Depends(security)):
@@ -116,4 +122,31 @@ async def get_vendor_profile(current_vendor: dict = Depends(get_current_vendor))
         "business_name": current_vendor["business_name"],
         "created_at": current_vendor["created_at"],
         "updated_at": current_vendor["updated_at"]
+    }
+
+
+# PUT /auth/me
+@router.put("/me")
+async def update_vendor_profile(update_data: VendorUpdateRequest, current_vendor: dict = Depends(get_current_vendor)):
+    update_fields = update_data.dict(exclude_unset=True)
+    
+    if not update_fields:
+        return {"message": "No fields to update"}
+    
+    update_fields["updated_at"] = datetime.utcnow()
+    
+    vendors_collection.update_one(
+        {"_id": current_vendor["_id"]},
+        {"$set": update_fields}
+    )
+    
+    vendor = vendors_collection.find_one({"_id": current_vendor["_id"]})
+    
+    return {
+        "vendor_id": str(vendor["_id"]),
+        "name": vendor.get("name"),
+        "email": vendor.get("email"),
+        "business_name": vendor.get("business_name"),
+        "created_at": vendor.get("created_at"),
+        "updated_at": vendor.get("updated_at")
     }
