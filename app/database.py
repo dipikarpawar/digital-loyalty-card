@@ -10,3 +10,4 @@ db = client.digital_loyalty_card  # Database will be created automatically
 
 vendors_collection = db.vendors 
 customers_collection = db.customers
+loyalty_cards_collection = db.loyalty_cards

@@ -63,7 +63,6 @@ def get_current_vendor(credentials: HTTPAuthorizationCredentials = Depends(secur
     return vendor
 
 
-# POST /auth/register
 @router.post("/register")
 async def register_vendor(vendor: VendorRegisterRequest):
     # Check if vendor already exists
@@ -89,7 +88,6 @@ async def register_vendor(vendor: VendorRegisterRequest):
     return {"message": "Vendor registered successfully", "vendor_id": vendor_id}
 
 
-# POST /auth/login
 @router.post("/login")
 async def login_vendor(credentials: VendorLoginRequest):
     vendor = vendors_collection.find_one({"email": credentials.email})
@@ -111,7 +109,6 @@ async def login_vendor(credentials: VendorLoginRequest):
     return {"access_token": token}
 
 
-# GET /auth/me
 @router.get("/me")
 async def get_vendor_profile(current_vendor: dict = Depends(get_current_vendor)):
     # Return selected fields only
@@ -125,7 +122,6 @@ async def get_vendor_profile(current_vendor: dict = Depends(get_current_vendor))
     }
 
 
-# PUT /auth/me
 @router.put("/me")
 async def update_vendor_profile(update_data: VendorUpdateRequest, current_vendor: dict = Depends(get_current_vendor)):
     update_fields = update_data.dict(exclude_unset=True)

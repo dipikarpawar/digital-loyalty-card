@@ -37,7 +37,6 @@ class CustomerResponse(BaseModel):
     created_at: datetime
 
 
-# POST /customer/register
 @router.post("/register", response_model=CustomerResponse)
 async def register_customer(customer: CustomerRegisterRequest, current_vendor: dict = Depends(get_current_vendor)):
     # Prepare customer document
@@ -82,7 +81,6 @@ async def register_customer(customer: CustomerRegisterRequest, current_vendor: d
     )
 
 
-# GET /customer/all
 @router.get("/all", response_model=List[CustomerResponse])
 async def list_customers(current_vendor: dict = Depends(get_current_vendor)):
     # Fetch all customers for this vendor
@@ -105,7 +103,6 @@ async def list_customers(current_vendor: dict = Depends(get_current_vendor)):
     return customers
 
 
-# GET /customer/134323
 @router.get('/{id}')
 @router.get("/{customer_id}", response_model=CustomerResponse)
 async def get_customer(customer_id: str = Path(..., description="ID of the customer"), current_vendor: dict = Depends(get_current_vendor)):
@@ -137,7 +134,6 @@ async def get_customer(customer_id: str = Path(..., description="ID of the custo
     )
 
 
-# PUT /customer/134323
 @router.put("/{customer_id}")
 async def update_customer(customer_id: str, updates: CustomerUpdateRequest, current_vendor: dict = Depends(get_current_vendor)):
     # Convert ID
@@ -180,7 +176,6 @@ async def update_customer(customer_id: str, updates: CustomerUpdateRequest, curr
     )
 
 
-# DELETE /customer/134323
 @router.delete("/{customer_id}")
 async def delete_customer(customer_id: str, current_vendor: dict = Depends(get_current_vendor)):
     # Convert ID
